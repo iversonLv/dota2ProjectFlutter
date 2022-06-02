@@ -2,7 +2,7 @@ class Player {
   String? trackedUntil;
   Profile? profile;
   int? soloCompetitiveRank;
-  Null? leaderboardRank;
+  int? leaderboardRank;
   int? rankTier;
   int? competitiveRank;
   MmrEstimate? mmrEstimate;
@@ -49,7 +49,7 @@ class Player {
 class Profile {
   int? accountId;
   String? personaname;
-  Null? name;
+  String? name;
   bool? plus;
   int? cheese;
   String? steamid;

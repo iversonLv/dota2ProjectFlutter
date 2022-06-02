@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import './models/player.dart';
 import './models/player_wl.dart';
+import './utils.dart';
 
 const baseApiUrl = 'api.opendota.com';
-const playerId = 128741677;
+const playerId = 128741677;  //topson 94054712
+//128741677
 
 const greenColor = Color.fromRGBO(102, 187, 106, 1);
 const redColor = Color.fromRGBO(255, 76, 76, 1);
 const yellowColor = Color.fromRGBO(201, 175, 29, 1);
 const lightBlueColor = Color.fromRGBO(124, 153, 168, 1);
+const lightYellowColor = Color.fromRGBO(236, 217, 200, 1);
 
 ThemeData _customTheme() {
   return ThemeData(
@@ -98,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return Container(
             color: Theme.of(context).backgroundColor,
             child: const Center(
-                child: Text('Loading1233...'),
+                child: Text('Loading...', style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1),)),
             ),
           );
         } else {
@@ -115,12 +118,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  player.profile?.personaname as String,
-                  style: TextStyle(
-                  fontSize: 28,
-                  color: Theme.of(context).primaryColor,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      player.profile?.name != null ? player.profile?.name as String : player.profile?.personaname as String,
+                      style: TextStyle(
+                      fontSize: 28,
+                      color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+                    player.profile?.name != null ? Tooltip(
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      preferBelow: false,
+                      textStyle: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColor
+                      ),
+                      message: 'Confirmed by ${player.profile?.name}',
+                      child: const Icon(
+                        Icons.check_circle_outlined,
+                        color: yellowColor,
+                        size: 25.0,
+                      ),
+                    ) : const SizedBox()
+                  ],
                 ),
                 const SizedBox(
                   height: 15,
@@ -194,6 +222,82 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   ],
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                  // PLUS
+                  player.profile?.plus as bool ? 
+                    Tooltip (
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      preferBelow: false,
+                      textStyle: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColor
+                      ),
+                      message: 'Dota plus subscriber',
+                      child: const Image(
+                        width: 65,
+                        height: 75,
+                        image: NetworkImage('https://www.opendota.com/assets/images/dota2/dota_plus_icon.png'),
+                      ),
+                  ) : const SizedBox(),
+                  const SizedBox(width: 20,),
+                  // Rate
+                    Tooltip(
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      preferBelow: false,
+                      textStyle: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColor
+                      ),
+                      message: rankTierPipe(player.rankTier),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Rank stars number
+                          player.rankTier != null && player.rankTier.toString()[1] != '0' ? Image(
+                            height: 124,
+                            width: 124,
+                            image: NetworkImage(
+                              'https://www.opendota.com/assets/images/dota2/rank_icons/rank_star_${player.rankTier.toString()[1]}.png',
+                              scale: 1
+                            ),
+                          ) : const SizedBox(width: 0),
+                          // Rank icon
+                          Image(
+                            height: 124,
+                            width: 124,
+                            image: NetworkImage('https://www.opendota.com/assets/images/dota2/rank_icons/rank_icon_${player.rankTier != null ? player.rankTier.toString()[0] : "0"}${player.leaderboardRank != null && player.leaderboardRank! >= 1  &&  player.leaderboardRank! <= 10 ? "c" : (player.leaderboardRank != null &&  player.leaderboardRank!  <=100 && player.leaderboardRank! > 10 ? "b" : "")}.png'),
+                          ),
+                          // Rank number if not null
+                          Positioned(
+                            bottom: 8,
+                            child: Text(
+                              player.leaderboardRank != null ? player.leaderboardRank.toString() : '',
+                              style: 
+                                const TextStyle(
+                                  fontSize: 22,
+                                  color: lightYellowColor
+                                ),
+                              ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20,),
+                  ],
+
+                )
               ],
             ),
           );

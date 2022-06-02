@@ -4,7 +4,7 @@ A new Flutter project for web.
 
 ## Getting Started
 
-run `flutter run` and view page on Chrome or Edge
+run `flutter run -d edge --web-renderer html` and view page on Chrome or Edge
 
 | Key       | Value     | Description     |
 | :------------- | :----------: | :----------: |
@@ -20,8 +20,8 @@ run `flutter run` and view page on Chrome or Edge
 [] Setup Service/Store/Action/Reducers/Effects
   - [] constants TODO: now all constants are locally, we should update use api call: Fixed, we now use dotaconstants package
   - [] Player service
-    - [] GET Player data  
-    - [] GET Player win lose  
+    - [x] GET Player data  
+    - [x] GET Player win lose  
     - [] GET Player recent matches  
     - [] GET Player matches  
     - [] GET Player heroes 
