@@ -14,7 +14,7 @@ class TooltipWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip (
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.all(Radius.circular(5.0)),

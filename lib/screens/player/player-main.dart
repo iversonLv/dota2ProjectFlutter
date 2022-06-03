@@ -71,6 +71,7 @@ class _PlayerMainState extends State<PlayerMain> {
                       ),
                     ),
                     const SizedBox(width: 10,),
+                    // confirmed by
                     player.profile?.name != null ? TooltipWrapper(
                       message: 'Confirmed by ${player.profile?.name}',
                       child: const Icon(
@@ -78,7 +79,20 @@ class _PlayerMainState extends State<PlayerMain> {
                         color: yellowColor,
                         size: 25.0,
                       ),
-                    ) : const SizedBox()
+                    ) : const SizedBox(),
+                    const SizedBox(width: 10,),
+                    // country
+                    player.profile?.loccountrycode != null ?
+                    TooltipWrapper(
+                      message: player.profile?.loccountrycode as String,
+                      child: Image(
+                      height: 25,
+                      width: 25,
+                      image: NetworkImage(
+                        'https://community.cloudflare.steamstatic.com/public/images/countryflags/${player.profile?.loccountrycode!.toLowerCase()}.gif',
+                        scale: 1
+                      ),
+                    )) : const SizedBox(),
                   ],
                 ),
                 const SizedBox(
