@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// shared
+import 'package:flutter_dota2_web/shared/components/tooltip-wrapper.dart';
+
 // models
 import '../../models/player.dart';
 
@@ -19,17 +22,7 @@ class RankTierIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-        padding: const EdgeInsets.all(5.0),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-        ),
-        preferBelow: false,
-        textStyle: TextStyle(
-          fontSize: 12,
-          color: Theme.of(context).primaryColor
-        ),
+    return TooltipWrapper(
         message: rankTierPipe(player.rankTier),
         child: Stack(
           alignment: Alignment.center,

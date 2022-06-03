@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // shared
 import 'package:flutter_dota2_web/shared/components/rank-tier-icon.dart';
+import 'package:flutter_dota2_web/shared/components/tooltip-wrapper.dart';
 
 // services
 import './services.dart';
@@ -41,14 +42,17 @@ class _PlayerMainState extends State<PlayerMain> {
             ),
           );
         } else {
+          // player data
           final Player player = snapshot.data[0];
           final PlayerWL playerWl = snapshot.data[1];
+
           return Container(
             padding: const EdgeInsets.fromLTRB(35, 25, 25, 25),
             color: Theme.of(context).backgroundColor,
             child: Column(
               children: [
                 Center(
+                  // player avatar
                   child: PlayerAvatar(player: player),
                 ),
                 const SizedBox(
@@ -58,6 +62,7 @@ class _PlayerMainState extends State<PlayerMain> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // player name and confirmed by
                     Text(
                       player.profile?.name != null ? player.profile?.name as String : player.profile?.personaname as String,
                       style: TextStyle(
@@ -66,17 +71,7 @@ class _PlayerMainState extends State<PlayerMain> {
                       ),
                     ),
                     const SizedBox(width: 10,),
-                    player.profile?.name != null ? Tooltip(
-                      padding: const EdgeInsets.all(5.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      ),
-                      preferBelow: false,
-                      textStyle: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).primaryColor
-                      ),
+                    player.profile?.name != null ? TooltipWrapper(
                       message: 'Confirmed by ${player.profile?.name}',
                       child: const Icon(
                         Icons.check_circle_outlined,
@@ -110,24 +105,15 @@ class _PlayerMainState extends State<PlayerMain> {
                   children: [
                   // PLUS
                     player.profile?.plus as bool ? 
-                    Tooltip (
-                      padding: const EdgeInsets.all(5.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      ),
-                      preferBelow: false,
-                      textStyle: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).primaryColor
-                      ),
-                      message: 'Dota plus subscriber',
-                      child: const Image(
+                    const TooltipWrapper(
+                      message: 'Dota plus subscriber', 
+                      child: Image(
                         width: 65,
                         height: 75,
                         image: NetworkImage('https://www.opendota.com/assets/images/dota2/dota_plus_icon.png'),
-                      ),
-                    ) : const SizedBox(),
+                      )
+                    )
+                      : const SizedBox(),
                     const SizedBox(width: 20,),
                     // RankTierIcon
                     RankTierIcon(player: player),
