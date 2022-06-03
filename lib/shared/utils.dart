@@ -19,4 +19,4 @@ String rankTierPipe(rankTier) {
     } else {
       return 'Unknown';
     }
-} 
+}

@@ -1,20 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_dota2_web/shared/components/rank-tier-icon.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+// models
 import './models/player.dart';
 import './models/player_wl.dart';
-import './utils.dart';
 
-const baseApiUrl = 'api.opendota.com';
-const playerId = 128741677;  //topson 94054712
-//128741677
+// shared
+import 'shared/utils.dart';
 
-const greenColor = Color.fromRGBO(102, 187, 106, 1);
-const redColor = Color.fromRGBO(255, 76, 76, 1);
-const yellowColor = Color.fromRGBO(201, 175, 29, 1);
-const lightBlueColor = Color.fromRGBO(124, 153, 168, 1);
-const lightYellowColor = Color.fromRGBO(236, 217, 200, 1);
+// constants
+import 'shared/constants.dart';
+
+// component
+import 'screens/player/components/player-avatar.dart';
+
+// config
+import './config.dart';
+
 
 ThemeData _customTheme() {
   return ThemeData(
@@ -228,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                   // PLUS
-                  player.profile?.plus as bool ? 
+                    player.profile?.plus as bool ? 
                     Tooltip (
                       padding: const EdgeInsets.all(5.0),
                       decoration: const BoxDecoration(
@@ -246,54 +250,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 75,
                         image: NetworkImage('https://www.opendota.com/assets/images/dota2/dota_plus_icon.png'),
                       ),
-                  ) : const SizedBox(),
-                  const SizedBox(width: 20,),
-                  // Rate
-                    Tooltip(
-                      padding: const EdgeInsets.all(5.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      ),
-                      preferBelow: false,
-                      textStyle: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).primaryColor
-                      ),
-                      message: rankTierPipe(player.rankTier),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // Rank stars number
-                          player.rankTier != null && player.rankTier.toString()[1] != '0' ? Image(
-                            height: 124,
-                            width: 124,
-                            image: NetworkImage(
-                              'https://www.opendota.com/assets/images/dota2/rank_icons/rank_star_${player.rankTier.toString()[1]}.png',
-                              scale: 1
-                            ),
-                          ) : const SizedBox(width: 0),
-                          // Rank icon
-                          Image(
-                            height: 124,
-                            width: 124,
-                            image: NetworkImage('https://www.opendota.com/assets/images/dota2/rank_icons/rank_icon_${player.rankTier != null ? player.rankTier.toString()[0] : "0"}${player.leaderboardRank != null && player.leaderboardRank! >= 1  &&  player.leaderboardRank! <= 10 ? "c" : (player.leaderboardRank != null &&  player.leaderboardRank!  <=100 && player.leaderboardRank! > 10 ? "b" : "")}.png'),
-                          ),
-                          // Rank number if not null
-                          Positioned(
-                            bottom: 8,
-                            child: Text(
-                              player.leaderboardRank != null ? player.leaderboardRank.toString() : '',
-                              style: 
-                                const TextStyle(
-                                  fontSize: 22,
-                                  color: lightYellowColor
-                                ),
-                              ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    ) : const SizedBox(),
+                    const SizedBox(width: 20,),
+                    // RankTierIcon
+                    RankTierIcon(player: player),
                     const SizedBox(width: 20,),
                   ],
 
@@ -304,32 +264,6 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
       )
-    );
-  }
-}
-
-class PlayerAvatar extends StatelessWidget {
-  const PlayerAvatar({
-    Key? key,
-    required this.player,
-  }) : super(key: key);
-
-  final Player player;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 124,
-      height: 124,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: [BoxShadow(blurRadius: 15, color: Color.fromRGBO(0, 0, 0, .4), spreadRadius: 2)],
-      ),
-      child: CircleAvatar(
-        radius: 100,
-        backgroundImage: NetworkImage(player.profile?.avatarfull as String),
-      ),
     );
   }
 }
