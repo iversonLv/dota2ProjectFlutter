@@ -10,6 +10,10 @@ run `flutter run -d edge --web-renderer html` and view page on Chrome or Edge
 | :------------- | :----------: | :----------: |
 |  baseApiUrl | https://api.opendota.com/api  | Main Api could open swagger to view |
 
+## Useful tools
+[svg code to svg file](https://www.svgviewer.dev/)  
+[color picker](https://g.co/kgs/8bBbnH)
+
 ## Todo list
 [] Setup general service  
   - [] GET  

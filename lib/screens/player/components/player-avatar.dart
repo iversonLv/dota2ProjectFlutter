@@ -16,7 +16,6 @@ class PlayerAvatar extends StatelessWidget {
       width: 124,
       height: 124,
       decoration: const BoxDecoration(
-        color: Colors.white,
         shape: BoxShape.circle,
         boxShadow: [BoxShadow(blurRadius: 15, color: Color.fromRGBO(0, 0, 0, .4), spreadRadius: 2)],
       ),

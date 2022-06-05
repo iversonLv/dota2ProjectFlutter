@@ -10,7 +10,7 @@ import '../../models/player.dart';
 import '../utils.dart';
 
 // constants
-import '../constants.dart';
+import '../app-color.dart';
 
 class RankTierIcon extends StatelessWidget {
   const RankTierIcon({
@@ -35,7 +35,7 @@ class RankTierIcon extends StatelessWidget {
                 'https://www.opendota.com/assets/images/dota2/rank_icons/rank_star_${player.rankTier.toString()[1]}.png',
                 scale: 1
               ),
-            ) : const SizedBox(width: 0),
+            ) : const SizedBox(),
             // Rank icon
             Image(
               height: 124,
