@@ -18844,7 +18844,7 @@ Mj(){var s=0,r=A.a1(t.K),q,p
 var $async$Mj=A.a2(function(a,b){if(a===1)return A.Z(b,r)
 while(true)switch(s){case 0:p=B.a5
 s=4
-return A.aa($.zw().GB("data/game-mode.json"),$async$Mj)
+return A.aa($.zw().GB("assets/data/game-mode.json"),$async$Mj)
 case 4:s=3
 return A.aa(p.c1(0,b),$async$Mj)
 case 3:q=b
