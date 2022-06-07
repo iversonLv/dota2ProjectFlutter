@@ -8,7 +8,7 @@ import '../../config.dart';
 
 // local json
 Future<Object> getGameModesData() async {
-  final String response = await rootBundle.loadString('data/game-mode.json');
+  final String response = await rootBundle.loadString('assets/data/game-mode.json');
   final data = await json.decode(response);
   return data;
 }
