@@ -33,7 +33,7 @@ class HeroImgAndTapInfo extends StatelessWidget {
     final double heroIntGain = hero['int_gain'];
 
     final int heroMoveSpeed = hero['move_speed'];
-    final int heroBaseAttack = hero['base_attack_min'] + heroBaseAgi - hero['base_attack_max'] + heroBaseAgi;
+    final String heroBaseAttack = '${hero['base_attack_min'] + heroBaseAgi} - ${hero['base_attack_max'] + heroBaseAgi}';
     final double heroBaseArmor = hero['base_armor'] + 0.167 * heroBaseAgi;
     final int heroAttackRange = hero['attack_range'];
     return GestureDetector(
@@ -44,6 +44,7 @@ class HeroImgAndTapInfo extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return Container(
+              height: MediaQuery.of(context).size.height * 0.45,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30.0),
@@ -51,148 +52,155 @@ class HeroImgAndTapInfo extends StatelessWidget {
                 ),
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),
-              padding: const EdgeInsets.all(20),
-              height: MediaQuery.of(context).size.height * 0.45,
+              // padding: const EdgeInsets.all(20),
               child: Stack(
-                  alignment: AlignmentDirectional.topCenter,
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    // hero img
-                    Positioned(
-                      top: -70,
-                      child: Stack(
-                        alignment: AlignmentDirectional.topCenter,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [BoxShadow(blurRadius: 15, color: Color.fromRGBO(0, 0, 0, .4), spreadRadius: 2)],
-                            ),
-                            child: CircleAvatar(
-                              radius: 100,
-                              backgroundImage: NetworkImage(steamCDN + heroImg),
-                            ),
-                          ),
-                          Positioned(
-                            top: -20,
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
+                    clipBehavior: Clip.none,
+                    alignment: AlignmentDirectional.topCenter,
+                    children: <Widget>[
+                      // hero img
+                      Positioned(
+                        top: -70,
+                        child: Stack(
+                          alignment: AlignmentDirectional.topCenter,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Theme.of(context).scaffoldBackgroundColor
-                                
+                                boxShadow: [BoxShadow(blurRadius: 15, color: Color.fromRGBO(0, 0, 0, .4), spreadRadius: 2)],
                               ),
-                              child: SvgPicture.asset('assets/images/hero-attr-$heroPrimaryAttri.svg'),
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundImage: NetworkImage(steamCDN + heroImg),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // hero name
-                    SingleChildScrollView(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            heroName,
-                            style: TextStyle(
-                              fontSize: 28,
-                              color: Theme.of(context).primaryColor,
+                            Positioned(
+                              top: -20,
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).scaffoldBackgroundColor
+                                  
+                                ),
+                                child: SvgPicture.asset('assets/images/hero-attr-$heroPrimaryAttri.svg'),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10,),
-                          // hp mp
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                'HP',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: heroHPColor,
-                                ),
+                            Positioned(
+                              top: -80,
+                              child: IconButton(
+                                iconSize: 48,
+                                onPressed: () => Navigator.pop(context), 
+                                icon: const Icon(Icons.keyboard_double_arrow_down_rounded, size:48, color: Colors.white,)
                               ),
-                              Text(
-                                heroHP.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: heroHPColor,
-                                ),
-                              ),
-                              const Text(
-                                ' / MP',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: heroMPColor,
-                                ),
-                              ),
-                              Text(
-                                heroMP.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: heroMPColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
-                          // hero attach type and roles
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '$heroAttackType - ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                              for(var role in heroRoles ) Text('$role, ', style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
-                          // hero attri and attri gain
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              HeroBaseAttrAndGain(heroAttri: 'str', heroBase: heroBaseStr, heroGain: heroStrGain, heroPrimaryAttri: heroPrimaryAttri),
-                              const SizedBox(width: 15,),
-                              HeroBaseAttrAndGain(heroAttri: 'agi', heroBase: heroBaseAgi, heroGain: heroAgiGain, heroPrimaryAttri: heroPrimaryAttri),
-                              const SizedBox(width: 15,),
-                              HeroBaseAttrAndGain(heroAttri: 'int', heroBase: heroBaseInt, heroGain: heroIntGain, heroPrimaryAttri: heroPrimaryAttri),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
-                          const Divider(color: Colors.white,),
-                          const SizedBox(height: 10,),
-                          // hero info
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              HeroBaseInfo(heroBaseInfoLabel: 'Move speed', heroBaseInfo: heroMoveSpeed.toString()),
-                              const SizedBox(height: 10,),
-                              HeroBaseInfo(heroBaseInfoLabel: 'Base attack', heroBaseInfo: heroBaseAttack.toString()),
-                              const SizedBox(height: 10,),
-                              HeroBaseInfo(heroBaseInfoLabel: 'Base armor', heroBaseInfo: heroBaseArmor.toStringAsFixed(1)),
-                              const SizedBox(height: 10,),
-                              HeroBaseInfo(heroBaseInfoLabel: 'Attack range', heroBaseInfo: heroAttackRange.toString()),
-                            ],
-                          )
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      // hero name
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.only(top: 40, left: 40, right: 40),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              heroName,
+                              style: TextStyle(
+                                fontSize: 28,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            const SizedBox(height: 10,),
+                            // hp mp
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'HP',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: heroHPColor,
+                                  ),
+                                ),
+                                Text(
+                                  heroHP.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: heroHPColor,
+                                  ),
+                                ),
+                                const Text(
+                                  ' / MP',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: heroMPColor,
+                                  ),
+                                ),
+                                Text(
+                                  heroMP.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: heroMPColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            // hero attach type and roles
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '$heroAttackType - ',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                for(var role in heroRoles ) Text('$role, ', style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            // hero attri and attri gain
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                HeroBaseAttrAndGain(heroAttri: 'str', heroBase: heroBaseStr, heroGain: heroStrGain, heroPrimaryAttri: heroPrimaryAttri),
+                                const SizedBox(width: 15,),
+                                HeroBaseAttrAndGain(heroAttri: 'agi', heroBase: heroBaseAgi, heroGain: heroAgiGain, heroPrimaryAttri: heroPrimaryAttri),
+                                const SizedBox(width: 15,),
+                                HeroBaseAttrAndGain(heroAttri: 'int', heroBase: heroBaseInt, heroGain: heroIntGain, heroPrimaryAttri: heroPrimaryAttri),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            const Divider(color: Colors.white,),
+                            const SizedBox(height: 10,),
+                            // hero info
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                HeroBaseInfo(heroBaseInfoLabel: 'Move speed', heroBaseInfo: heroMoveSpeed.toString()),
+                                const SizedBox(height: 10,),
+                                HeroBaseInfo(heroBaseInfoLabel: 'Base attack', heroBaseInfo: heroBaseAttack.toString()),
+                                const SizedBox(height: 10,),
+                                HeroBaseInfo(heroBaseInfoLabel: 'Base armor', heroBaseInfo: heroBaseArmor.toStringAsFixed(1)),
+                                const SizedBox(height: 10,),
+                                HeroBaseInfo(heroBaseInfoLabel: 'Attack range', heroBaseInfo: heroAttackRange.toString()),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
               );
           },
         );

@@ -7,7 +7,7 @@ ThemeData _customTheme() {
   return ThemeData(
     primaryColor: const Color.fromRGBO(245, 245, 245, .87),
     scaffoldBackgroundColor: const Color.fromRGBO(25, 32, 35, 1),
-    backgroundColor: const Color.fromRGBO(14, 84, 113, .37),
+    backgroundColor: const Color.fromRGBO(14, 84, 113, 1),
     cardColor: const Color(0xFF883B2D),
     textSelectionTheme: const TextSelectionThemeData(
     selectionColor: Color(0xFFFEDBD0),

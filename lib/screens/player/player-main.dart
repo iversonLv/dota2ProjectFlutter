@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_dota2_web/models/player_recent_match.dart';
 import 'package:flutter_dota2_web/shared/components/hero-img-tap-info.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 // shared
 import 'package:flutter_dota2_web/shared/components/rank-tier-icon.dart';
 import 'package:flutter_dota2_web/shared/components/tooltip-wrapper.dart';
 import 'package:flutter_dota2_web/shared/services.dart';
+import 'package:flutter_dota2_web/shared/utils.dart';
 
 // services
-import '../../config.dart';
 import './services.dart';
 
 // models
@@ -22,6 +22,7 @@ import '../../shared/app-color.dart';
 // component
 import './components/player-avatar.dart';
 import 'components/player-wl-stat.dart';
+
 
 class PlayerMain extends StatefulWidget {
   const PlayerMain({ Key? key }) : super(key: key);
@@ -40,19 +41,16 @@ class _PlayerMainState extends State<PlayerMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
           FutureBuilder(
             future: Future.wait([getPlayerData(), getPlayerWLData()]),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
-                return Container(
-                  color: Theme.of(context).backgroundColor,
-                  child: const Center(
+                return const Center(
                       child: Text('Loading...', style: TextStyle(color: Colors.white,)),
-                  ),
-                );
+                  );
               } else {
                 // player data
                 final Player player = snapshot.data[0];
@@ -60,7 +58,6 @@ class _PlayerMainState extends State<PlayerMain> {
 
                 return Container(
                   padding: const EdgeInsets.fromLTRB(35, 25, 25, 25),
-                  color: Theme.of(context).backgroundColor,
                   child: Column(
                     children: [
                       Center(
@@ -151,11 +148,11 @@ class _PlayerMainState extends State<PlayerMain> {
           // playerRecentMatches
           Expanded(
             child: FutureBuilder(
-            future: Future.wait([getPlayerReacntMatchData(), getHeroesData()]),
+            future: Future.wait([getPlayerReacntMatchData(), getHeroesData(), getGameModesData()]),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return Container(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: const Center(
                       child: Text('Loading...', style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1),)),
                   ),
@@ -165,41 +162,139 @@ class _PlayerMainState extends State<PlayerMain> {
                 final List<PlayerRecentMatch> playerRecentMatches = snapshot.data[0];
                 // heroes data
                 final Map<String, dynamic> heroes = snapshot.data[1];
-                return ListView.builder(
+                // game modes
+                final Map<String, dynamic> gameModes = snapshot.data[2];
+                return ListView.separated(
                   itemCount: playerRecentMatches.length,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 10,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
                    final Map<String, dynamic> hero = heroes[playerRecentMatches[index].heroId.toString()];
-                  //  final String heroImg = hero['img'];
-                  //  final String heroName = hero['localized_name'];
-                  //  final String heroPrimaryAttri = hero['primary_attr'];
 
-                  //  final int heroHP = hero['base_health'] + hero['base_str'] * 20;
-                  //  final int heroMP = hero['base_mana'] + hero['base_int'] * 12;
-
-                  //  final String heroAttackType = hero['attack_type'];
-                  //  final List<dynamic> heroRoles = hero['roles'];
-
-                  //  final int heroBaseStr = hero['base_str'];
-                  //  final double heroStrGain = hero['str_gain'];
-
-                  //  final int heroBaseAgi = hero['base_agi'];
-                  //  final double heroAgiGain = hero['agi_gain'];
-
-                  //  final int heroBaseInt = hero['base_int'];
-                  //  final double heroIntGain = hero['int_gain'];
-
-                  //  final int heroMoveSpeed = hero['move_speed'];
-                  //  final int heroBaseAttack = hero['base_attack_min'] + heroBaseAgi - hero['base_attack_max'] + heroBaseAgi;
-                  //  final double heroBaseArmor = hero['base_armor'] + 0.167 * heroBaseAgi;
-                  //  final int heroAttackRange = hero['attack_range'];
+                   final int matchDuration = playerRecentMatches[index].duration!;
+                   final String side =  playerRecentMatches[index].playerSlot! > 4 ?  'Dire' : 'Radiant';
+                   final String gameMode = gameModes[playerRecentMatches[index].gameMode.toString()]['name'];
+                   final int startTime = playerRecentMatches[index].startTime! * 1000;
+                   final int kills = playerRecentMatches[index].kills!;
+                   final int deaths = playerRecentMatches[index].deaths!;
+                   final int assists = playerRecentMatches[index].assists!;
+                   final int kdaTotal = kills + deaths + assists;
 
                     return Container(
-                      padding: const EdgeInsets.all(10),
+                      // padding: const EdgeInsets.fromLTRB(40, 30, 20, 5),
+                      height: 135,
+                      alignment: Alignment.bottomRight,
+                      padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                       child: Stack(
                         children: [
-                          HeroImgAndTapInfo(hero: hero)
-                          
+                          // main container
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              height: 100,
+                              width: MediaQuery.of(context).size.width - 70,
+                              decoration: const BoxDecoration(
+                                color: Colors.black12,
+                                boxShadow: [BoxShadow(blurRadius: 2, color: Color.fromRGBO(0, 0, 0, .2), spreadRadius: 1)],
+                              ),
+                              padding: const EdgeInsets.only(left: 40),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        const SizedBox(height: 5,),
+                                        DurationSizeMode(label: 'Duration', data: duration(matchDuration)),
+                                        const SizedBox(height: 5,),
+                                        DurationSizeMode(label: 'Side', data: side),
+                                        const SizedBox(height: 5,),
+                                        DurationSizeMode(label: 'Mode', data: nameDestruct(gameMode, '_' , 2, 'upperCase')), 
+                                        const SizedBox(height: 5,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            KDAText(label: 'K', kda: kills),
+                                            KDAText(label: 'D', kda: deaths),
+                                            KDAText(label: 'A', kda: assists),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5,),
+                                        // kda
+                                        Row(
+                                          children: [
+                                            KDABar(label: 'K', kdaTotal: kdaTotal, kda: kills ),
+                                            KDABar(label: 'D', kdaTotal: kdaTotal, kda: deaths ),
+                                            KDABar(label: 'A', kdaTotal: kdaTotal, kda: assists ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  // win lost
+                                  const SizedBox(width: 5,),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: win(playerRecentMatches[index].playerSlot, playerRecentMatches[index].radiantWin) ? greenColor : redColor,
+                                    ),
+                                    width: 20,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      win(playerRecentMatches[index].playerSlot, playerRecentMatches[index].radiantWin) ? 'W' : 'L',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ),
+                          ),
+                          // hero name
+                          Positioned(
+                            right: 0,
+                            top: 10,
+                            left: 85,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  hero['localized_name'],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  ' | ${dateTillToday(startTime).toString()}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  milisecondsToDate(startTime),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ),
+                          // hero img
+                          Positioned(
+                            width: 55,
+                            height: 55,
+                            left: 20,
+                            top: 20,
+                            child: HeroImgAndTapInfo(hero: hero),
+                          ),
                         ],
+                        
                       )
                     );
                   }
@@ -207,10 +302,94 @@ class _PlayerMainState extends State<PlayerMain> {
               }
             }
           ),
-          )
-          
+          ),
         ],
       )
+    );
+  }
+}
+
+class KDAText extends StatelessWidget {
+  const KDAText({
+    Key? key,
+    required this.label,
+    required this.kda,
+  }) : super(key: key);
+
+  final String label;
+  final int kda;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '$label: $kda',
+      style: TextStyle(
+        fontSize: 12,
+        color: Theme.of(context).primaryColor,
+      )
+    );
+  }
+}
+
+class KDABar extends StatelessWidget {
+  const KDABar({
+    Key? key,
+    required this.label,
+    required this.kdaTotal,
+    required this.kda,
+  }) : super(key: key);
+
+  final String label;
+  final int kda;
+  final int kdaTotal;
+
+  Color kdaColor(String label) {
+    return label == 'K' ? greenColor : label == 'D' ? redColor : lightBlueColor;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: (MediaQuery.of(context).size.width - 135) * (kda / kdaTotal),
+      height: 10,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: kdaColor(label),
+      ),
+    );
+  }
+}
+
+class DurationSizeMode extends StatelessWidget {
+  const DurationSizeMode({
+    Key? key,
+    required this.label,
+    required this.data,
+  }) : super(key: key);
+
+  final String label;
+  final dynamic data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+        '$label: ',
+        style: TextStyle(
+          fontSize: 12,
+          color: Theme.of(context).primaryColor,
+          )
+        ),
+        Text(
+        data,
+        style: TextStyle(
+          fontSize: 12,
+          color: Theme.of(context).primaryColor,
+          )
+        ),
+      ],
     );
   }
 }
