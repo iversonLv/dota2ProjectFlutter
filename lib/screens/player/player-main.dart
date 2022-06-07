@@ -70,12 +70,20 @@ class _PlayerMainState extends State<PlayerMain> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           // player name and confirmed by
-                          Text(
-                            player.profile?.name != null ? player.profile?.name as String : player.profile?.personaname as String,
-                            style: TextStyle(
-                            fontSize: 28,
-                            color: Theme.of(context).primaryColor,
-                            ),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    player.profile?.name != null ? player.profile?.name as String : player.profile?.personaname as String,
+                                    style: TextStyle(
+                                    fontSize: 28,
+                                    color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                           const SizedBox(width: 10,),
                           // confirmed by
