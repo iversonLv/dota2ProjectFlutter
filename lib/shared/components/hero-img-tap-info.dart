@@ -44,7 +44,7 @@ class HeroImgAndTapInfo extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return Container(
-              height: MediaQuery.of(context).size.height * 0.45,
+              height: 440,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30.0),
@@ -103,7 +103,7 @@ class HeroImgAndTapInfo extends StatelessWidget {
                       ),
                       // hero name
                       SingleChildScrollView(
-                        padding: const EdgeInsets.only(top: 40, left: 40, right: 40),
+                        padding: const EdgeInsets.only(top: 30, left: 40, right: 40),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -151,8 +151,8 @@ class HeroImgAndTapInfo extends StatelessWidget {
                             ),
                             const SizedBox(height: 10,),
                             // hero attach type and roles
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Wrap(
+                              alignment: WrapAlignment.center,
                               children: [
                                 Text(
                                   '$heroAttackType - ',

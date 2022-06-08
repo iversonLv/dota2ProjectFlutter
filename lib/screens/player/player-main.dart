@@ -57,7 +57,7 @@ class _PlayerMainState extends State<PlayerMain> {
                 final PlayerWL playerWl = snapshot.data[1];
 
                 return Container(
-                  padding: const EdgeInsets.fromLTRB(35, 25, 25, 25),
+                  padding: const EdgeInsets.fromLTRB(25, 25, 25, 25),
                   decoration: const BoxDecoration(
                     boxShadow: [BoxShadow(blurRadius: 2, color: Color.fromRGBO(0, 0, 0, .2), spreadRadius: 1, offset: Offset(0.0, 0.75))],
                   ),
@@ -77,7 +77,7 @@ class _PlayerMainState extends State<PlayerMain> {
                               Text(
                                 player.profile?.name != null ? player.profile?.name as String : player.profile?.personaname as String,
                                 style: TextStyle(
-                                fontSize: 26,
+                                fontSize: 22,
                                 color: Theme.of(context).primaryColor,
                                 ),
                               ),
@@ -124,10 +124,10 @@ class _PlayerMainState extends State<PlayerMain> {
                             children: [
                               // player wins stat
                               PlayerWLstat(playerWl: playerWl, label: 'WINS', stat: playerWl.win.toString(), statColor: greenColor),
-                              const SizedBox(width: 25,),
+                              const SizedBox(width: 10,),
                               // player loses stat
                               PlayerWLstat(playerWl: playerWl, label: 'LOSSES', stat: playerWl.lose.toString(), statColor: redColor),
-                              const SizedBox(width: 25,),
+                              const SizedBox(width: 10,),
                               // plaery winrate stat
                               PlayerWLstat(playerWl: playerWl, label: 'WINRATE', stat: '${(playerWl.win! / (playerWl.lose! + playerWl.win!) * 100).toStringAsFixed(2)} %', statColor: Theme.of(context).primaryColor),
                             ],
