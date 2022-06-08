@@ -13,8 +13,8 @@ class PlayerAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 124,
-      height: 124,
+      width: 80,
+      height: 80,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [BoxShadow(blurRadius: 15, color: Color.fromRGBO(0, 0, 0, .4), spreadRadius: 2)],
