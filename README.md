@@ -6,6 +6,13 @@ A new Flutter project for web.
 
 run `flutter run -d edge --web-renderer html` and view page on Chrome or Edge
 
+## Deploy to github pages
+`git checkout gh-pages` from `main` branch
+`flutter build ./docs --release --web-renderer html --base-href /dota2ProjectFlutter/`
+`git add .`  
+`git commit -am "built base {dev merge to main commit}"`
+`git push https://github.com/iversonLv/dota2ProjectFlutter.git`
+
 | Key       | Value     | Description     |
 | :------------- | :----------: | :----------: |
 |  baseApiUrl | https://api.opendota.com/api  | Main Api could open swagger to view |
