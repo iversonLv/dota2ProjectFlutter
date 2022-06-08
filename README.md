@@ -7,11 +7,17 @@ A new Flutter project for web.
 run `flutter run -d edge --web-renderer html` and view page on Chrome or Edge
 
 ## Deploy to github pages
-`git checkout gh-pages` from `main` branch
-`flutter build ./docs --release --web-renderer html --base-href /dota2ProjectFlutter/`
-`git add .`  
-`git commit -am "built base {dev merge to main commit}"`
-`git push https://github.com/iversonLv/dota2ProjectFlutter.git`
+- `git checkout gh-pages`
+- `git merge main`  
+the branch you are working for latest
+- `flutter build web --release --web-renderer html --base-href /dota2ProjectFlutter/`  
+base-href for your git page
+- `cp -avr build/web/* docs/`  
+github pages set docs
+- `git add .`  
+- `git commit -am "built base {dev merge to main commit}"`
+- `git push https://github.com/iversonLv/dota2ProjectFlutter.git`  
+your git repro
 
 | Key       | Value     | Description     |
 | :------------- | :----------: | :----------: |
