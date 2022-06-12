@@ -1,4 +1,4 @@
-import 'dart:math';
+
 import 'package:intl/intl.dart';
 import 'package:flutter_dota2_web/config.dart';
 
@@ -47,7 +47,7 @@ String nameDestruct(String? value, String separator, int separatorPlacement, Str
   // example lobby_type name is lobby_type_normal, we need destruct only last string and uppercase
   if (value != null && value.split(separator).length > 1) {
    if (upperCase == 'upperCase') {
-        return value.split(separator).sublist(separatorPlacement).map((i) => i[0].toUpperCase() + i.substring(1).toLowerCase()).join(' ');
+        return value.split(separator).sublist(separatorPlacement).map((String i) => i[0].toUpperCase() + i.substring(1).toLowerCase()).join(' ');
       } else {
         return value.split(separator).sublist(separatorPlacement).join(' ');
       }
@@ -109,4 +109,18 @@ String milisecondsToDate(int miliseconds) {
   final f = DateFormat(mediumDate);
   final String gameStartTime = f.format(DateTime.fromMillisecondsSinceEpoch(miliseconds));
   return gameStartTime;
+}
+
+String greaterNum(int num, int gN, String unit)  {
+		var minus = '';
+    if (num < 0) {
+      minus = '-';
+    }
+    num = (num).abs();
+    if (num > gN) {
+      final newNum = (num / gN).toStringAsFixed(1);
+      return '$minus$newNum$unit';
+    } else {
+      return '$minus$num';
+    }
 }

@@ -10,7 +10,7 @@ run `flutter run -d edge --web-renderer html` and view page on Chrome or Edge
 - `git checkout gh-pages`
 - `git merge main`  
 the branch you are working for latest
-- `flutter build web --release --web-renderer html --base-href /dota2ProjectFlutter/`  
+- `flutter build web --release --web-renderer html --base-href=/dota2ProjectFlutter/`  
 base-href for your git page
 - `cp -avr build/web/* docs/`  
 github pages set docs

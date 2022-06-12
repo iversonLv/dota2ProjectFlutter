@@ -50,7 +50,8 @@ class PlayerRecentMatch {
       this.isRoaming,
       this.cluster,
       this.leaverStatus,
-      this.partySize});
+      this.partySize
+    });
 
   PlayerRecentMatch.fromJson(Map<String, dynamic> json) {
     matchId = json['match_id'];

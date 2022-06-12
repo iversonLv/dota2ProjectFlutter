@@ -22,7 +22,7 @@ class RankTierIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double size = 90;
+    const double size = 60;
     return TooltipWrapper(
         message: rankTierPipe(player.rankTier),
         child: Stack(
