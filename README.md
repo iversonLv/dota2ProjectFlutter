@@ -38,8 +38,9 @@ your git repro
   - [] constants TODO: now all constants are locally, we should update use api call: Fixed, we now use dotaconstants package
   - [] Player service
     - [x] GET Player data  
+    - [x] Show Player average data  
     - [x] GET Player win lose  
-    - [] GET Player recent matches  
+    - [x] GET Player recent matches  
     - [] GET Player matches  
     - [] GET Player heroes 
     - [] GET Player peers  
