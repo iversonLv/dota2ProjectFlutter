@@ -3,8 +3,9 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "ad2aa0486dbcd1328ce7feaa407353a9",
+  "assets/AssetManifest.json": "dfaeadd2274c47d33ca16981084b2b02",
 "assets/assets/data/game-mode.json": "e0ece7e148d7dc50fcf192af5d964ceb",
+"assets/assets/data/land_role.json": "eb3d4ea4ed3d5387b0963550e5c9361d",
 "assets/assets/images/hero-attr-agi.svg": "7dd0236d67cddeef93051e89b8568d42",
 "assets/assets/images/hero-attr-int.svg": "41eddd94319de86b4ae0977eeea3f4ae",
 "assets/assets/images/hero-attr-str.svg": "ccdabb04acdfa20c1a4a0d0bae94b936",
@@ -24,9 +25,9 @@ const RESOURCES = {
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "bc3b2d980920f43492271ecc16b6e4bc",
-"/": "bc3b2d980920f43492271ecc16b6e4bc",
-"main.dart.js": "69033ffff4cbdf5c70c100e4c2ccaec9",
+"index.html": "9b9fcabf33a9445df57c4b7c08a3cca7",
+"/": "9b9fcabf33a9445df57c4b7c08a3cca7",
+"main.dart.js": "7f86231b5e8fb45858619609e0dba0e0",
 "manifest.json": "8c4043700633f750d90b98fbf470c60c",
 "version.json": "e662ce3084e1e5629714f58abff833d0"
 };
