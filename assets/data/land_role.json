@@ -1,0 +1,22 @@
+{
+  "0": {
+    "id": 0,
+    "name": "land_role_unknown"
+  },
+  "1": {
+    "id": 1,
+    "name": "land_role_safe"
+  },
+  "2": {
+    "id":2,
+    "name": "land_role_mid"
+  },
+  "3": {
+    "id": 3,
+    "name": "land_role_off"
+  },
+  "4": {
+    "id": 4,
+    "name": "land_role_jungle"
+  }
+}

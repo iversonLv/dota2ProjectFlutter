@@ -1,6 +1,7 @@
 
 import 'package:intl/intl.dart';
 import 'package:flutter_dota2_web/config.dart';
+import 'package:flutter/material.dart';
 
 // rankTierPipe tooltip above player rank icon
 String rankTierPipe(int? rankTier) {
@@ -124,3 +125,11 @@ String greaterNum(int num, int gN, String unit)  {
       return '$minus$num';
     }
 }
+
+// show data from green to red base on the win and lose
+Color calColor(int? win, int? games) {
+    final red = (255 - 255 * win! / games!).round();
+    final green = (255 * win / games).round();
+    final finalColor = Color.fromRGBO(red, green, 0, 1);
+    return finalColor;
+  }

@@ -2,17 +2,15 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dota2_web/config.dart';
-import 'package:flutter_dota2_web/models/player_recent_match.dart';
-import 'package:flutter_dota2_web/screens/player/components/player-average-maximum.dart';
+import 'package:flutter_dota2_web/screens/player/components/player-win-count.dart';
 
 // shared
 import 'package:flutter_dota2_web/shared/components/rank-tier-icon.dart';
 import 'package:flutter_dota2_web/shared/components/tooltip-wrapper.dart';
 import 'package:flutter_dota2_web/shared/services.dart';
-import 'package:flutter_dota2_web/shared/utils.dart';
 
 // services
+import '../../shared/utils.dart';
 import './services.dart';
 
 // models
@@ -26,6 +24,8 @@ import '../../shared/app-color.dart';
 import './components/player-avatar.dart';
 import 'components/player-recent-match.dart';
 import 'components/player-wl-stat.dart';
+import 'package:flutter_dota2_web/models/player_recent_match.dart';
+import 'package:flutter_dota2_web/screens/player/components/player-average-maximum.dart';
 
 final List<String> extraList = ['winRate','kills','deaths','assists','gold_per_min','xp_per_min','last_hits','hero_damage','hero_healing','tower_damage', 'duration'];
 class PlayerMain extends StatefulWidget {
@@ -136,7 +136,7 @@ class _PlayerMainState extends State<PlayerMain> {
                               PlayerWLstat(playerWl: playerWl, label: 'LOSSES', stat: playerWl.lose.toString(), statColor: redColor),
                               const SizedBox(width: 10,),
                               // plaery winrate stat
-                              PlayerWLstat(playerWl: playerWl, label: 'WINRATE', stat: '${(playerWl.win! / (playerWl.lose! + playerWl.win!) * 100).toStringAsFixed(2)} %', statColor: Theme.of(context).primaryColor),
+                              PlayerWLstat(playerWl: playerWl, label: 'WINRATE', stat: '${(playerWl.win! / (playerWl.lose! + playerWl.win!) * 100).toStringAsFixed(2)} %', statColor: calColor(playerWl.win, playerWl.lose! + playerWl.win!)),
                             ],
                           ),
                         ],
@@ -153,7 +153,15 @@ class _PlayerMainState extends State<PlayerMain> {
           // playerRecentMatches and average
           Expanded(
             child: FutureBuilder(
-            future: Future.wait([getPlayerReacntMatchData(), getHeroesData(), getGameModesData()]),
+            future: Future.wait([
+              getGameModesData(),
+              getLandRoleData(),
+              getHeroesData(),
+              getRegionData(),
+              getPatchData(),
+              getPlayerReacntMatchData(),
+              getPlayerCountData()
+            ]),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return Container(
@@ -163,12 +171,21 @@ class _PlayerMainState extends State<PlayerMain> {
                   ),
                 );
               } else {
-                // player matches data
-                final List<PlayerRecentMatch> playerRecentMatches = snapshot.data[0];
-                // heroes data
-                final Map<String, dynamic> heroes = snapshot.data[1];
+                // data from API or local json
                 // game modes
-                final Map<String, dynamic> gameModes = snapshot.data[2];
+                final Map<String, dynamic> gameModes = snapshot.data[0];
+                // land roles
+                final Map<String, dynamic> landRole = snapshot.data[1];
+                // heroes data
+                final Map<String, dynamic> heroes = snapshot.data[2];
+                // region
+                final Map<String, dynamic> region = snapshot.data[3]; 
+                // patch
+                final List<dynamic> patch = snapshot.data[4];
+                // player matches data
+                final List<PlayerRecentMatch> playerRecentMatches = snapshot.data[5];
+                // player count
+                final Map<String, dynamic> playerCounts = extractCountData(snapshot.data[6]);
                 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,6 +219,44 @@ class _PlayerMainState extends State<PlayerMain> {
                             itemBuilder: (BuildContext context, int index) {
                               final item = extraList[index];
                               return PlayerAverageMaximum(item: item, playerRecentMatches: playerRecentMatches, heroes: heroes);
+                            }
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 5,),
+                    Text(
+                      '  Count win %',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                        
+                      )
+                    ),
+                    const SizedBox(height: 5,),
+                    SizedBox(
+                      height: 50,
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                          PointerDeviceKind.touch,
+                          PointerDeviceKind.mouse,
+                        }),
+                        child: ListView.separated(
+                            controller: controllerAverageData,
+                            separatorBuilder: (context, index) => const SizedBox(
+                              width: 2,
+                            ),
+                            itemCount: playerCounts.keys.toList().length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context, int index) {
+                              final List<dynamic> playerCountsListArr = playerCounts.values.toList();
+                              return PlayerWinCount(
+                                playerCountsListArr: playerCountsListArr[index],
+                                gameModes: gameModes,
+                                landRole: landRole,
+                                region: region,
+                                patch: patch
+                              );
                             }
                         ),
                       ),
@@ -271,3 +326,4 @@ class _PlayerMainState extends State<PlayerMain> {
     );
   }
 }
+

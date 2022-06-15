@@ -45,3 +45,15 @@ Future<List<PlayerRecentMatch>> getPlayerReacntMatchData() async {
     return throw Exception('Failed to load post!');
   }
 }
+
+// getPlayerCount
+Future<Map<String, dynamic>> getPlayerCountData() async {
+  var url = Uri.https(baseApiUrl, 'api/players/$playerId/counts', {});
+  var response = await http.get(url);
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    return data;
+  } else {
+    return throw Exception('Failed to load post!');
+  }
+}
