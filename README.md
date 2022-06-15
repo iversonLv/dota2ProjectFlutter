@@ -1,6 +1,7 @@
 # flutter_dota2_web
 
 A new Flutter project for web.
+Preview: ![preview](./preview.png)
 
 ## Getting Started
 
